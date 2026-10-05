@@ -1,0 +1,171 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  FARMER
+  BUYER
+  PROCESSOR
+  ADMIN
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  phone         String?        @unique
+  passwordHash  String
+  fullName      String
+  role          Role           @default(FARMER)
+  isActive      Boolean        @default(true)
+  failedLogins  Int            @default(0)
+  lockedUntil   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
+  listings      Listing[]      @relation("FarmerListings")
+  orders        Order[]        @relation("BuyerOrders")
+  wallet        Account?
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+enum ListingStatus {
+  ACTIVE
+  SOLD_OUT
+  CANCELLED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  DELIVERED
+  DISPUTED
+  CANCELLED
+  COMPLETED
+}
+
+model Listing {
+  id             String        @id @default(uuid())
+  farmerId       String
+  farmer         User          @relation("FarmerListings", fields: [farmerId], references: [id])
+  cropName       String
+  description    String?
+  quantityKg     Int
+  pricePerKgKobo Int
+  location       String
+  status         ListingStatus @default(ACTIVE)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  orders         Order[]
+
+  @@index([farmerId])
+  @@index([status, cropName])
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  buyerId       String
+  buyer         User        @relation("BuyerOrders", fields: [buyerId], references: [id])
+  listingId     String
+  listing       Listing     @relation(fields: [listingId], references: [id])
+  quantityKg    Int
+  unitPriceKobo Int
+  totalKobo     Int
+  status        OrderStatus @default(PENDING)
+  paidAt        DateTime?
+  deliveredAt   DateTime?
+  dispute       Dispute?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([buyerId])
+  @@index([listingId])
+}
+
+enum DisputeStatus {
+  OPEN
+  RESOLVED
+}
+
+enum DisputeOutcome {
+  RELEASED_TO_FARMER
+  REFUNDED_TO_BUYER
+}
+
+model Dispute {
+  id             String          @id @default(uuid())
+  orderId        String          @unique
+  order          Order           @relation(fields: [orderId], references: [id])
+  openedById     String
+  reason         String
+  status         DisputeStatus   @default(OPEN)
+  outcome        DisputeOutcome?
+  resolvedById   String?
+  resolutionNote String?
+  createdAt      DateTime        @default(now())
+  resolvedAt     DateTime?
+}
+
+enum AccountType {
+  USER_WALLET
+  ESCROW
+  EXTERNAL
+}
+
+enum LedgerTxType {
+  DEPOSIT
+  ESCROW_HOLD
+  ESCROW_RELEASE
+  ESCROW_REFUND
+}
+
+model Account {
+  id        String        @id @default(uuid())
+  type      AccountType
+  userId    String?       @unique
+  user      User?         @relation(fields: [userId], references: [id])
+  createdAt DateTime      @default(now())
+  entries   LedgerEntry[]
+}
+
+model LedgerTransaction {
+  id             String        @id @default(uuid())
+  type           LedgerTxType
+  idempotencyKey String        @unique
+  orderId        String?
+  createdAt      DateTime      @default(now())
+  entries        LedgerEntry[]
+
+  @@index([orderId])
+}
+
+model LedgerEntry {
+  id            String            @id @default(uuid())
+  transactionId String
+  transaction   LedgerTransaction @relation(fields: [transactionId], references: [id])
+  accountId     String
+  account       Account           @relation(fields: [accountId], references: [id])
+  amountKobo    Int
+  createdAt     DateTime          @default(now())
+
+  @@index([accountId])
+  @@index([transactionId])
+}

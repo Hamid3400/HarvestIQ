@@ -6,4 +6,4 @@ src/generated
 *.webp
 node_modules/
 .claude/
-.windsurf/
+.windsurf/.agents/

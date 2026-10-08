@@ -4,3 +4,6 @@ dist
 src/generated
 *.jpg
 *.webp
+node_modules/
+.claude/
+.windsurf/

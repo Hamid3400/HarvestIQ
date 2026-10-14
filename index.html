@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarvestIQ - Intelligent AgTech Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #0f172a;
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+        .soft-shadow-hover {
+            transition: all 0.3s ease;
+        }
+        .soft-shadow-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 35px -10px rgba(5, 150, 105, 0.12);
+        }
+        /* Custom Tab Slider Animation */
+        .auth-tab-pill {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-800">
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" onclick="showPage('landing')" class="flex items-center gap-2.5 group">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="sprout" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-900">Harvest<span class="text-emerald-600">IQ</span></span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-10 text-sm font-medium text-slate-600">
+                <a href="#features" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Features</a>
+                <a href="#demo" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">AI Diagnostics</a>
+                <a href="#marketplace" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Marketplace</a>
+                <a href="#calculator" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Yield Calculator</a>
+                <a href="#testimonials" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Impact</a>
+            </nav>
+
+            <!-- Header CTAs -->
+            <div class="hidden sm:flex items-center gap-4">
+                <button onclick="openAuth('login')" class="text-sm font-medium text-slate-700 hover:text-emerald-600 px-3 py-2 transition-colors">Log In</button>
+                <button onclick="openAuth('signup')" class="text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 px-5 py-2.5 rounded-xl shadow-sm transition-all hover:shadow-emerald-600/25">Get Started Free</button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="menu-btn" class="md:hidden p-2 text-slate-600 hover:text-slate-900 focus:outline-none">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-100 px-6 py-6 space-y-4">
+            <a href="#features" onclick="showPage('landing')" class="block text-slate-600 font-medium hover:text-emerald-600">Features</a>
+            <a href="#demo" onclick="showPage('landing')" class="block text-slate-600 font-medium hover:text-emerald-600">AI Diagnostics</a>
+            <a href="#marketplace" onclick="showPage('landing')" class="block text-slate-600 font-medium hover:text-emerald-600">Marketplace</a>
+            <a href="#calculator" onclick="showPage('landing')" class="block text-slate-600 font-medium hover:text-emerald-600">Yield Calculator</a>
+            <a href="#testimonials" onclick="showPage('landing')" class="block text-slate-600 font-medium hover:text-emerald-600">Impact</a>
+            <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+                <button onclick="openAuth('login')" class="w-full text-center font-medium text-slate-700 py-2 border border-slate-200 rounded-xl">Log In</button>
+                <button onclick="openAuth('signup')" class="w-full text-center font-medium text-white bg-emerald-600 py-3 rounded-xl shadow-sm">Get Started Free</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- LANDING PAGE VIEW -->
+    <main id="landing-page" class="block">
+        <!-- Hero Section -->
+        <section class="relative pt-12 pb-24 lg:pt-20 lg:pb-32 overflow-hidden bg-white">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                    
+                    <!-- Left Text Content -->
+                    <div class="lg:col-span-6 space-y-8">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold tracking-wide uppercase">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
+                            <span>Next-Gen AgTech Intelligence</span>
+                        </div>
+
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.15]">
+                            Smarter Farming for <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Maximum Yield.</span>
+                        </h1>
+
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-xl font-normal">
+                            Empower your farm with real-time AI crop diagnostics, predictive weather intelligence, and direct market access. All in one simple, minimalist platform.
+                        </p>
+
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <button onclick="openAuth('signup')" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow-md hover:shadow-lg hover:shadow-emerald-600/20 transition-all">
+                                <span>Try Free Demo</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                            <a href="#features" class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium border border-slate-200 transition-all">
+                                <i data-lucide="play-circle" class="w-5 h-5 text-slate-500"></i>
+                                <span>Explore Features</span>
+                            </a>
+                        </div>
+
+                        <!-- Trust Stats -->
+                        <div class="pt-6 border-t border-slate-100 flex items-center gap-8 text-slate-500 text-sm">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                                <span>15,000+ Active Farmers</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                                <span>98.4% Diagnostic Accuracy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Hero Visual + Weather Widget Overlay -->
+                    <div class="lg:col-span-6 relative">
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-slate-50">
+                            <img 
+                                src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?auto=format&fit=crop&w=1200&q=80" 
+                                alt="Modern Agricultural Technology Field" 
+                                class="w-full h-[460px] sm:h-[520px] object-cover object-center"
+                                onerror="this.src='https://placehold.co/1200x800/e2e8f0/0f172a?text=Agricultural+Technology'"
+                            />
+                            
+                            <!-- Soft Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent"></div>
+
+                            <!-- Floating Live Weather Widget Overlay -->
+                            <div class="absolute bottom-6 left-6 right-6 sm:left-6 sm:right-auto sm:max-w-xs bg-white/95 backdrop-blur-md p-5 rounded-2xl border border-slate-100 shadow-xl space-y-3">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="cloud-sun" class="w-5 h-5 text-amber-500"></i>
+                                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Farm Field Status</span>
+                                    </div>
+                                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                </div>
+                                <div class="flex items-baseline justify-between">
+                                    <div>
+                                        <span class="text-2xl font-bold text-slate-900">24°C</span>
+                                        <span class="text-xs text-slate-500 ml-1">Optimal Soil Temp</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-semibold text-emerald-600">Good Conditions</span>
+                                        <p class="text-xs text-slate-400">Moisture: 68%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Features Section -->
+        <section id="features" class="py-24 bg-slate-50/50 border-y border-slate-100">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                
+                <div class="text-center max-w-2xl mx-auto space-y-4 mb-20">
+                    <p class="text-emerald-600 font-semibold text-sm uppercase tracking-widest">Platform Capabilities</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">Everything you need to grow smarter</h2>
+                    <p class="text-slate-600 text-base">Designed for precision agriculture without complex clutter. Clean data when and where you need it.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- Feature 1 -->
+                    <div class="bg-white p-8 rounded-2xl border border-slate-100 soft-shadow soft-shadow-hover space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <i data-lucide="scan-line" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Crop Scanner AI</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Instant disease identification and pest detection using smartphone photos powered by deep neural networks.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-white p-8 rounded-2xl border border-slate-100 soft-shadow soft-shadow-hover space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <i data-lucide="store" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Direct Marketplace</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Connect directly with verified buyers and trusted suppliers. Cut out intermediaries and retain higher profit margins.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-white p-8 rounded-2xl border border-slate-100 soft-shadow soft-shadow-hover space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <i data-lucide="book-open" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Learn & Grow Hub</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Actionable agronomist guides, seasonal planting calendars, and localized soil health optimization tips.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="bg-white p-8 rounded-2xl border border-slate-100 soft-shadow soft-shadow-hover space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <i data-lucide="badge-dollar-sign" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Financial Services</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Micro-loans, parametric crop insurance, and financial record management custom-tailored for small-to-mid farms.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive AI Scanner Demo Section -->
+        <section id="demo" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                    
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold uppercase">
+                            <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Live AI Interactive Demo
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">Diagnose Crop Issues in Seconds</h2>
+                        <p class="text-slate-600 leading-relaxed">
+                            Select a leaf sample to test our AI model. HarvestIQ identifies deficiencies, fungal infections, and pest damage instantly with precision treatment plans.
+                        </p>
+
+                        <div class="space-y-3 pt-2">
+                            <div class="flex items-start gap-3">
+                                <div class="p-1 rounded bg-emerald-100 text-emerald-700 mt-0.5">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                                <p class="text-sm text-slate-700 font-medium">98.4% diagnostic accuracy across 120+ crop varieties</p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="p-1 rounded bg-emerald-100 text-emerald-700 mt-0.5">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                                <p class="text-sm text-slate-700 font-medium">Instant bio-pesticide and dosage recommendations</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Demo Widget Container -->
+                    <div class="lg:col-span-7 bg-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-100 soft-shadow">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-4">Choose a sample leaf image to scan:</p>
+
+                        <!-- Image Selector Thumbnails -->
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <button onclick="selectScanSample('corn')" id="btn-corn" class="scan-btn p-2 rounded-2xl bg-white border-2 border-emerald-600 shadow-sm transition-all text-center group">
+                                <img src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=300&q=80" alt="Corn Leaf" class="w-full h-20 object-cover rounded-xl mb-2 group-hover:opacity-90">
+                                <span class="text-xs font-semibold text-slate-800">Maize Leaf</span>
+                            </button>
+                            <button onclick="selectScanSample('tomato')" id="btn-tomato" class="scan-btn p-2 rounded-2xl bg-white border-2 border-transparent hover:border-slate-300 transition-all text-center group">
+                                <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=300&q=80" alt="Tomato Leaf" class="w-full h-20 object-cover rounded-xl mb-2 group-hover:opacity-90">
+                                <span class="text-xs font-semibold text-slate-800">Tomato Leaf</span>
+                            </button>
+                            <button onclick="selectScanSample('wheat')" id="btn-wheat" class="scan-btn p-2 rounded-2xl bg-white border-2 border-transparent hover:border-slate-300 transition-all text-center group">
+                                <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=300&q=80" alt="Wheat Leaf" class="w-full h-20 object-cover rounded-xl mb-2 group-hover:opacity-90">
+                                <span class="text-xs font-semibold text-slate-800">Wheat Field</span>
+                            </button>
+                        </div>
+
+                        <!-- Scanner Box -->
+                        <div class="relative bg-white p-6 rounded-2xl border border-slate-200 text-center space-y-4">
+                            <div id="scan-view" class="relative overflow-hidden rounded-xl h-48 bg-slate-100 flex items-center justify-center">
+                                <img id="scanner-img" src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                                <!-- Scanning Laser Line Animation -->
+                                <div id="laser-line" class="hidden absolute inset-x-0 h-1 bg-emerald-500 shadow-[0_0_15px_#10b981] animate-bounce"></div>
+                            </div>
+
+                            <button id="run-scan-btn" onclick="triggerScan()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl shadow-sm transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="scan" class="w-4 h-4"></i>
+                                <span>Run AI Diagnostics</span>
+                            </button>
+
+                            <!-- Diagnostic Result Output Box -->
+                            <div id="scan-result" class="hidden text-left p-4 rounded-xl bg-emerald-50/80 border border-emerald-100 space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span id="res-title" class="font-bold text-slate-900 text-sm">Northern Corn Leaf Blight</span>
+                                    <span id="res-conf" class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-200 text-emerald-800">97.8% Match</span>
+                                </div>
+                                <p id="res-desc" class="text-xs text-slate-600 leading-relaxed">Detected early fungal lesions. Recommended organic spray treatment: Copper hydroxide application within 48 hours.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Marketplace Preview Section -->
+        <section id="marketplace" class="py-24 bg-slate-50/50 border-t border-slate-100">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-4">
+                    <div>
+                        <p class="text-emerald-600 font-semibold text-sm uppercase tracking-widest">Fair Trade Network</p>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight mt-1">Direct Crop Marketplace</h2>
+                    </div>
+                    <a href="#" onclick="openAuth('login')" class="inline-flex items-center gap-1.5 text-emerald-600 font-semibold hover:text-emerald-700 text-sm">
+                        View full marketplace <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Product Card 1 -->
+                    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden soft-shadow soft-shadow-hover flex flex-col">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=600&q=80" alt="Tomatoes" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-semibold px-2.5 py-1 rounded-lg shadow-sm">Grade A Organic</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                                    <span>Supplier: GreenValley Farm</span>
+                                    <span>Available: 4.2 Tons</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-slate-900">Vine-Ripened Organic Tomatoes</h3>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-slate-900">$1,250</span>
+                                    <span class="text-xs text-slate-500"> / metric ton</span>
+                                </div>
+                                <button onclick="openAuth('signup')" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-xl transition-colors">Order Quote</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 2 -->
+                    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden soft-shadow soft-shadow-hover flex flex-col">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80" alt="Wheat Grain" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-semibold px-2.5 py-1 rounded-lg shadow-sm">Bulk Grain</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                                    <span>Supplier: Prairie Harvest Co.</span>
+                                    <span>Available: 12.5 Tons</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-slate-900">Hard Red Winter Wheat</h3>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-slate-900">$340</span>
+                                    <span class="text-xs text-slate-500"> / metric ton</span>
+                                </div>
+                                <button onclick="openAuth('signup')" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-xl transition-colors">Order Quote</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 3 -->
+                    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden soft-shadow soft-shadow-hover flex flex-col">
+                        <div class="relative h-48 overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=600&q=80" alt="Yellow Corn" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-900 text-xs font-semibold px-2.5 py-1 rounded-lg shadow-sm">Verified Non-GMO</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                                    <span>Supplier: Midwest Agronomy</span>
+                                    <span>Available: 28.0 Tons</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-slate-900">Premium Yellow Feed Maize</h3>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-slate-900">$280</span>
+                                    <span class="text-xs text-slate-500"> / metric ton</span>
+                                </div>
+                                <button onclick="openAuth('signup')" class="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-xl transition-colors">Order Quote</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Live Yield / ROI Calculator Section -->
+        <section id="calculator" class="py-24 bg-white">
+            <div class="max-w-5xl mx-auto px-6 lg:px-12">
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-8 sm:p-12 soft-shadow">
+                    
+                    <div class="text-center max-w-xl mx-auto space-y-3 mb-12">
+                        <p class="text-emerald-600 font-semibold text-xs uppercase tracking-widest">Yield Optimization</p>
+                        <h2 class="text-3xl font-bold text-slate-900">Crop Yield & ROI Calculator</h2>
+                        <p class="text-slate-600 text-sm">Estimate your projected profit increase by implementing HarvestIQ precision tools.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                        <!-- Controls -->
+                        <div class="space-y-6">
+                            <!-- Acreage Slider -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm font-semibold text-slate-800">
+                                    <label for="acres">Farm Size (Acres)</label>
+                                    <span id="acres-val" class="text-emerald-600">120 Acres</span>
+                                </div>
+                                <input type="range" id="acres" min="10" max="1000" value="120" step="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600" oninput="calculateROI()">
+                            </div>
+
+                            <!-- Primary Crop Selection -->
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-slate-800 block">Primary Crop Type</label>
+                                <select id="crop-type" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm text-slate-800 font-medium focus:outline-none focus:border-emerald-500" onchange="calculateROI()">
+                                    <option value="corn">Corn / Maize</option>
+                                    <option value="wheat">Wheat</option>
+                                    <option value="tomatoes">Tomatoes / Produce</option>
+                                    <option value="soybeans">Soybeans</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Calculated Output Card -->
+                        <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6 text-center md:text-left">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Estimated Annual Yield Lift</span>
+                                <div class="text-4xl font-extrabold text-emerald-600" id="yield-lift">+24.5%</div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-100">
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Projected Added Net Revenue</span>
+                                <div class="text-3xl font-bold text-slate-900" id="roi-value">$18,720</div>
+                            </div>
+
+                            <p class="text-xs text-slate-400 leading-relaxed">Based on average disease prevention rates and optimized input management reported by active farmers.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials & Stats Counter Section -->
+        <section id="testimonials" class="py-24 bg-slate-50/50 border-t border-slate-100">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-20">
+                
+                <!-- Key Metric Counters -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="space-y-1">
+                        <p class="text-4xl font-extrabold text-slate-900">15K+</p>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Active Farmers</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-4xl font-extrabold text-slate-900">2.4M</p>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Acres Monitored</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-4xl font-extrabold text-emerald-600">98.4%</p>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">AI Accuracy Rate</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-4xl font-extrabold text-slate-900">$32M+</p>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Marketplace Volume</p>
+                    </div>
+                </div>
+
+                <!-- Customer Testimonials -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <div class="bg-white p-8 rounded-2xl border border-slate-100 soft-shadow space-y-4">
+                        <div class="flex items-center gap-1 text-amber-400">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed italic">
+                            "HarvestIQ saved almost 40% of our tomato crop when early blight struck last spring. The scanner caught it days before it was visible to the naked eye."
+                        </p>
+                        <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Farmer" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">Marcus Vance</h4>
+                                <p class="text-xs text-slate-400">Commercial Farmer, Iowa</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl border border-slate-100 soft-shadow space-y-4">
+                        <div class="flex items-center gap-1 text-amber-400">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed italic">
+                            "Selling our grain directly on the HarvestIQ marketplace cut our middleman fees by over 18%. The UI is clean, direct, and painless to navigate."
+                        </p>
+                        <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Farmer" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900">Elena Rostova</h4>
+                                <p class="text-xs text-slate-400">Cooperative Lead, Kansas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- AUTHENTICATION PAGE VIEW (MODERN COMBINED LOGIN / SIGN-UP) -->
+    <main id="auth-page" class="hidden min-h-[calc(100vh-80px)] bg-slate-50/50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div class="w-full max-w-md space-y-8 bg-white p-8 sm:p-10 rounded-3xl border border-slate-100 shadow-xl relative">
+            
+            <!-- Top Segmented Switch / Animated Toggle -->
+            <div class="relative bg-slate-100/80 p-1.5 rounded-2xl flex items-center justify-between">
+                <!-- Sliding Background Pill -->
+                <div id="auth-pill" class="auth-tab-pill absolute left-1.5 top-1.5 w-[calc(50%-6px)] h-[calc(100%-12px)] bg-white rounded-xl shadow-sm border border-slate-200/60"></div>
+                
+                <button type="button" onclick="switchAuthTab('login')" class="relative z-10 w-1/2 py-2.5 text-xs sm:text-sm font-semibold transition-colors duration-200 text-center text-slate-900" id="tab-btn-login">
+                    Log In
+                </button>
+                <button type="button" onclick="switchAuthTab('signup')" class="relative z-10 w-1/2 py-2.5 text-xs sm:text-sm font-semibold transition-colors duration-200 text-center text-slate-500 hover:text-slate-900" id="tab-btn-signup">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- Page Header Info -->
+            <div class="text-center space-y-2">
+                <h2 id="auth-heading" class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Welcome Back</h2>
+                <p id="auth-subheading" class="text-sm text-slate-500">Access your farm diagnostics and yield dashboard.</p>
+            </div>
+
+            <!-- Social Authentication Buttons -->
+            <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="handleSocialAuth('Google')" class="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Google</span>
+                </button>
+                <button type="button" onclick="handleSocialAuth('Phone')" class="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors">
+                    <i data-lucide="phone" class="w-4 h-4 text-emerald-600"></i>
+                    <span>SMS / Phone</span>
+                </button>
+            </div>
+
+            <div class="relative flex items-center justify-center">
+                <div class="border-t border-slate-200 w-full"></div>
+                <span class="bg-white px-3 text-xs uppercase tracking-wider text-slate-400 absolute">Or continue with</span>
+            </div>
+
+            <!-- LOG IN FORM VIEW -->
+            <form id="login-form" onsubmit="handleAuthSubmit(event, 'login')" class="space-y-5">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 block">Email Address or Phone</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                        <input type="text" required placeholder="farmer@harvestiq.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs font-semibold text-slate-700">Password</label>
+                        <a href="#" onclick="forgotPasswordModal()" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700">Forgot password?</a>
+                    </div>
+                    <div class="relative">
+                        <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                        <input id="login-pwd" type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-10 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('login-pwd', 'login-pwd-icon')" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600">
+                            <i id="login-pwd-icon" data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-slate-600">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                        <span>Remember this device</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-md hover:shadow-emerald-600/25 transition-all text-sm flex items-center justify-center gap-2">
+                    <span>Log In to HarvestIQ</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </form>
+
+            <!-- SIGN UP FORM VIEW -->
+            <form id="signup-form" onsubmit="handleAuthSubmit(event, 'signup')" class="hidden space-y-5">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 block">Full Name</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                        <input type="text" required placeholder="Marcus Vance" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 block">Email Address</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                        <input type="email" required placeholder="farmer@harvestiq.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+                    </div>
+                </div>
+
+                <!-- Farmer Role Selection -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 block">Primary Agricultural Role</label>
+                    <div class="relative">
+                        <i data-lucide="tractor" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 z-10"></i>
+                        <select required class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-900 font-medium focus:outline-none focus:border-emerald-600 focus:bg-white transition-all appearance-none cursor-pointer">
+                            <option value="crop">Crop Farmer / Cultivator</option>
+                            <option value="equipment">Equipment Owner / Service Provider</option>
+                            <option value="trader">Produce Buyer / Wholesaler</option>
+                            <option value="agronomist">Agronomist / Consultant</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none"></i>
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 block">Create Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5"></i>
+                        <input id="signup-pwd" type="password" required placeholder="At least 8 characters" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-10 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('signup-pwd', 'signup-pwd-icon')" class="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600">
+                            <i id="signup-pwd-icon" data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-xs text-slate-500 leading-relaxed">
+                    By signing up, you agree to HarvestIQ's 
+                    <a href="#" class="text-emerald-600 font-medium hover:underline">Terms of Service</a> and 
+                    <a href="#" class="text-emerald-600 font-medium hover:underline">Privacy Policy</a>.
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-md hover:shadow-emerald-600/25 transition-all text-sm flex items-center justify-center gap-2">
+                    <span>Create Free Account</span>
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                </button>
+            </form>
+
+            <div class="pt-4 border-t border-slate-100 text-center">
+                <button onclick="showPage('landing')" class="text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors inline-flex items-center gap-1.5">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Return to Main Overview
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SUCCESS MODAL / TOAST NOTIFICATION -->
+    <div id="auth-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center space-y-5 shadow-2xl border border-slate-100">
+            <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md shadow-emerald-500/10">
+                <i data-lucide="check-circle" class="w-9 h-9"></i>
+            </div>
+            <div class="space-y-1.5">
+                <h3 id="modal-title" class="text-xl font-bold text-slate-900">Success!</h3>
+                <p id="modal-msg" class="text-xs text-slate-600 leading-relaxed">Your request was processed successfully. Redirecting you to your main dashboard...</p>
+            </div>
+            <button onclick="closeModalAndRedirect()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-sm shadow-sm transition-all">
+                Continue to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-12">
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+                
+                <!-- Brand Info & Newsletter -->
+                <div class="md:col-span-5 space-y-6">
+                    <a href="#" onclick="showPage('landing')" class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold">
+                            <i data-lucide="sprout" class="w-5 h-5"></i>
+                        </div>
+                        <span class="text-lg font-bold tracking-tight text-slate-900">Harvest<span class="text-emerald-600">IQ</span></span>
+                    </a>
+                    <p class="text-sm text-slate-500 leading-relaxed max-w-sm">
+                        Building modern, clean digital tools to boost sustainable crop yields worldwide.
+                    </p>
+
+                    <!-- Newsletter Form -->
+                    <div class="space-y-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-700 block">Subscribe to Weekly AgTech Insights</span>
+                        <form onsubmit="event.preventDefault(); showModal('Subscribed!', 'Thank you for subscribing to HarvestIQ updates.');" class="flex gap-2">
+                            <input type="email" placeholder="Enter your email address" required class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-600 flex-1">
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl text-sm transition-colors">Join</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation Links -->
+                <div class="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">Product</h4>
+                        <ul class="space-y-2 text-sm text-slate-500">
+                            <li><a href="#demo" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">AI Leaf Scanner</a></li>
+                            <li><a href="#marketplace" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Crop Marketplace</a></li>
+                            <li><a href="#calculator" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Yield Calculator</a></li>
+                            <li><a href="#" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Weather API</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">Company</h4>
+                        <ul class="space-y-2 text-sm text-slate-500">
+                            <li><a href="#" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">About HarvestIQ</a></li>
+                            <li><a href="#" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Agronomist Team</a></li>
+                            <li><a href="#" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Careers</a></li>
+                            <li><a href="#" onclick="showPage('landing')" class="hover:text-emerald-600 transition-colors">Press Kit</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">Legal & Contact</h4>
+                        <ul class="space-y-2 text-sm text-slate-500">
+                            <li><a href="#" class="hover:text-emerald-600 transition-colors">Privacy Policy</a></li>
+                            <li><a href="#" class="hover:text-emerald-600 transition-colors">Terms of Service</a></li>
+                            <li><a href="#" class="hover:text-emerald-600 transition-colors">Support Center</a></li>
+                            <li><a href="#" class="hover:text-emerald-600 transition-colors">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+                <p>&copy; 2026 HarvestIQ Platform Inc. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-slate-600">Twitter</a>
+                    <a href="#" class="hover:text-slate-600">LinkedIn</a>
+                    <a href="#" class="hover:text-slate-600">YouTube</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle logic
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // View Navigation Logic (Landing vs Auth)
+        function showPage(page) {
+            const landing = document.getElementById('landing-page');
+            const auth = document.getElementById('auth-page');
+            
+            if (page === 'auth') {
+                landing.classList.add('hidden');
+                landing.classList.remove('block');
+                auth.classList.remove('hidden');
+                auth.classList.add('flex');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                auth.classList.add('hidden');
+                auth.classList.remove('flex');
+                landing.classList.remove('hidden');
+                landing.classList.add('block');
+            }
+            mobileMenu.classList.add('hidden');
+        }
+
+        function openAuth(type) {
+            showPage('auth');
+            switchAuthTab(type);
+        }
+
+        // Segmented Switch / Toggle Logic for Log In & Sign Up
+        function switchAuthTab(tab) {
+            const pill = document.getElementById('auth-pill');
+            const loginBtn = document.getElementById('tab-btn-login');
+            const signupBtn = document.getElementById('tab-btn-signup');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const heading = document.getElementById('auth-heading');
+            const subheading = document.getElementById('auth-subheading');
+
+            if (tab === 'login') {
+                pill.style.transform = 'translateX(0%)';
+                loginBtn.classList.add('text-slate-900');
+                loginBtn.classList.remove('text-slate-500');
+                signupBtn.classList.add('text-slate-500');
+                signupBtn.classList.remove('text-slate-900');
+
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+
+                heading.innerText = 'Welcome Back';
+                subheading.innerText = 'Access your farm diagnostics and yield dashboard.';
+            } else {
+                pill.style.transform = 'translateX(100%)';
+                signupBtn.classList.add('text-slate-900');
+                signupBtn.classList.remove('text-slate-500');
+                loginBtn.classList.add('text-slate-500');
+                loginBtn.classList.remove('text-slate-900');
+
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+
+                heading.innerText = 'Join HarvestIQ';
+                subheading.innerText = 'Start optimizing your agricultural crop yield today.';
+            }
+        }
+
+        // Toggle Password Visibility Function
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        // Form Submission and Modal Handling
+        function handleAuthSubmit(event, type) {
+            event.preventDefault();
+            if (type === 'login') {
+                showModal('Welcome Back!', 'Authentication successful. Loading your personalized farming dashboard...');
+            } else {
+                showModal('Account Created!', 'Your HarvestIQ profile is ready. Welcome to next-gen AgTech intelligence.');
+            }
+        }
+
+        function handleSocialAuth(provider) {
+            showModal(`Connected with ${provider}`, `Authenticating via ${provider}... Redirecting to your field status overview.`);
+        }
+
+        function forgotPasswordModal() {
+            showModal('Reset Password Link Sent', 'We have dispatched password recovery instructions to your registered email address.');
+        }
+
+        function showModal(title, msg) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-msg').innerText = msg;
+            const modal = document.getElementById('auth-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModalAndRedirect() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            window.location.href = '/assets/pages/users/language.html';
+        }
+
+        // Interactive Scanner Logic
+        const sampleData = {
+            corn: {
+                img: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=800&q=80",
+                title: "Northern Corn Leaf Blight",
+                confidence: "97.8% Match",
+                desc: "Detected early fungal lesions. Recommended action: Apply copper-based fungicide within 48 hours to preserve yield."
+            },
+            tomato: {
+                img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=800&q=80",
+                title: "Early Blight (Alternaria Solani)",
+                confidence: "99.1% Match",
+                desc: "Concentric ring spots identified on lower foliage. Prune affected stems and adjust drip irrigation."
+            },
+            wheat: {
+                img: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=800&q=80",
+                title: "Stripe Rust (Puccinia Striiformis)",
+                confidence: "95.4% Match",
+                desc: "Yellow pustules forming parallel lines. Ensure crop spacing and apply labeled triazole fungicide."
+            }
+        };
+
+        let activeSample = 'corn';
+
+        function selectScanSample(type) {
+            activeSample = type;
+            document.querySelectorAll('.scan-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-600');
+                btn.classList.add('border-transparent');
+            });
+            document.getElementById(`btn-${type}`).classList.add('border-emerald-600');
+            document.getElementById(`btn-${type}`).classList.remove('border-transparent');
+            document.getElementById('scanner-img').src = sampleData[type].img;
+            document.getElementById('scan-result').classList.add('hidden');
+        }
+
+        function triggerScan() {
+            const laser = document.getElementById('laser-line');
+            const resultBox = document.getElementById('scan-result');
+            const runBtn = document.getElementById('run-scan-btn');
+
+            laser.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+            runBtn.disabled = true;
+            runBtn.innerText = "Analyzing Neural Data...";
+
+            setTimeout(() => {
+                laser.classList.add('hidden');
+                runBtn.disabled = false;
+                runBtn.innerHTML = `<i data-lucide="scan" class="w-4 h-4"></i><span>Run AI Diagnostics</span>`;
+                
+                document.getElementById('res-title').innerText = sampleData[activeSample].title;
+                document.getElementById('res-conf').innerText = sampleData[activeSample].confidence;
+                document.getElementById('res-desc').innerText = sampleData[activeSample].desc;
+                resultBox.classList.remove('hidden');
+                
+                lucide.createIcons();
+            }, 1200);
+        }
+
+        // Live ROI & Crop Yield Calculator Logic
+        function calculateROI() {
+            const acres = parseInt(document.getElementById('acres').value);
+            const crop = document.getElementById('crop-type').value;
+
+            document.getElementById('acres-val').innerText = `${acres} Acres`;
+
+            let baseRevenuePerAcre = 600;
+            let yieldLiftPercent = 22.0;
+
+            if (crop === 'tomatoes') {
+                baseRevenuePerAcre = 2400;
+                yieldLiftPercent = 28.5;
+            } else if (crop === 'wheat') {
+                baseRevenuePerAcre = 450;
+                yieldLiftPercent = 18.0;
+            } else if (crop === 'soybeans') {
+                baseRevenuePerAcre = 550;
+                yieldLiftPercent = 20.5;
+            }
+
+            const calculatedRevenue = Math.round(acres * baseRevenuePerAcre * (yieldLiftPercent / 100));
+
+            document.getElementById('yield-lift').innerText = `+${yieldLiftPercent.toFixed(1)}%`;
+            document.getElementById('roi-value').innerText = `$${calculatedRevenue.toLocaleString()}`;
+        }
+    </script>
+
+    <script src="/loader.js"></script>
+</body>
+</html>

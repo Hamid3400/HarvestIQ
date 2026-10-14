@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarvestIQ - Agricultural Ecosystem Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-zinc-900 text-zinc-900 antialiased min-h-screen flex flex-col">
+
+    <!-- App Container - Full Viewport Edge-to-Edge -->
+    <div class="w-full flex-1 flex flex-col bg-white min-h-screen relative overflow-x-hidden">
+        
+        <!-- Top Application Header -->
+        <header class="flex items-center justify-between px-4 sm:px-8 py-3.5 bg-white border-b border-zinc-200 sticky top-0 z-30 shadow-xs">
+            <div class="flex items-center gap-3">
+                <button id="mobile-sidebar-toggle" onclick="toggleMobileSidebar()" class="text-zinc-800 hover:text-emerald-600 transition md:hidden p-1 rounded-lg hover:bg-zinc-100">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-600/20">
+                        <i data-lucide="sprout" class="w-5 h-5"></i>
+                    </div>
+                    <h1 class="text-xl font-bold tracking-tight text-zinc-900">Harvest<span class="text-emerald-600">IQ</span></h1>
+                </div>
+            </div>
+
+            <!-- Desktop Header Quick Navigation -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-600">
+                <button onclick="switchTab('home')" class="tab-head-btn nav-home text-emerald-600 font-semibold hover:text-emerald-700 transition">Home</button>
+                <button onclick="switchTab('scanner')" class="tab-head-btn nav-scanner hover:text-emerald-600 transition">Crop Scanner</button>
+                <button onclick="switchTab('market')" class="tab-head-btn nav-market hover:text-emerald-600 transition">Marketplace</button>
+                <button onclick="switchTab('learn')" class="tab-head-btn nav-learn hover:text-emerald-600 transition">Learn Hub</button>
+                <button onclick="switchTab('wallet')" class="tab-head-btn nav-wallet hover:text-emerald-600 transition">Wallet</button>
+            </nav>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="openApiKeyModal()" class="p-2 rounded-xl text-zinc-500 hover:text-emerald-600 hover:bg-zinc-100 transition" title="API Settings">
+                    <i data-lucide="key" class="w-5 h-5"></i>
+                </button>
+
+                <button onclick="toggleAIDrawer()" class="flex items-center gap-2 bg-emerald-700 text-white px-3.5 py-1.5 rounded-full font-semibold text-xs hover:bg-emerald-800 transition shadow-xs">
+                    <i data-lucide="sparkles" class="w-4 h-4 fill-white"></i>
+                    <span class="hidden sm:inline">Gemini AI Active</span>
+                </button>
+
+                <div class="w-9 h-9 rounded-full overflow-hidden border border-zinc-300 shadow-2xs">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Profile" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Area -->
+        <div class="flex-1 flex overflow-hidden relative">
+            
+            <!-- Mobile Sidebar Overlay -->
+            <div id="mobile-sidebar-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden backdrop-blur-xs transition-opacity"></div>
+
+            <!-- Sidebar Panel -->
+            <aside id="sidebar-panel" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-zinc-50 border-r border-zinc-200/80 p-5 flex flex-col justify-between shrink-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between md:hidden pb-3 border-b border-zinc-200">
+                        <span class="text-sm font-bold text-zinc-800">Menu</span>
+                        <button onclick="toggleMobileSidebar()" class="text-zinc-500 hover:text-zinc-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    </div>
+
+                    <div>
+                        <p class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2.5">Platform Navigation</p>
+                        <div class="space-y-1">
+                            <button onclick="switchTab('home'); toggleMobileSidebar(true);" class="sidebar-btn sidebar-home w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-50 text-emerald-700 font-semibold text-sm transition">
+                                <i data-lucide="home" class="w-5 h-5"></i> Home Dashboard
+                            </button>
+                            <button onclick="switchTab('scanner'); toggleMobileSidebar(true);" class="sidebar-btn sidebar-scanner w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900 font-medium text-sm transition">
+                                <i data-lucide="scan" class="w-5 h-5"></i> Crop Scanner AI
+                            </button>
+                            <button onclick="switchTab('market'); toggleMobileSidebar(true);" class="sidebar-btn sidebar-market w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900 font-medium text-sm transition">
+                                <i data-lucide="store" class="w-5 h-5"></i> Marketplace
+                            </button>
+                            <button onclick="switchTab('learn'); toggleMobileSidebar(true);" class="sidebar-btn sidebar-learn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900 font-medium text-sm transition">
+                                <i data-lucide="graduation-cap" class="w-5 h-5"></i> Learn &amp; Grow
+                            </button>
+                            <button onclick="switchTab('wallet'); toggleMobileSidebar(true);" class="sidebar-btn sidebar-wallet w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-600 hover:bg-zinc-200/60 hover:text-zinc-900 font-medium text-sm transition">
+                                <i data-lucide="wallet" class="w-5 h-5"></i> Farmer Wallet
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider mb-2.5">Languages</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-xs bg-white border border-zinc-200 px-2.5 py-1 rounded-lg text-zinc-700 font-medium">English</span>
+                            <span class="text-xs bg-white border border-zinc-200 px-2.5 py-1 rounded-lg text-zinc-700 font-medium">Yoruba</span>
+                            <span class="text-xs bg-white border border-zinc-200 px-2.5 py-1 rounded-lg text-zinc-700 font-medium">Hausa</span>
+                            <span class="text-xs bg-white border border-zinc-200 px-2.5 py-1 rounded-lg text-zinc-700 font-medium">Igbo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-emerald-900 to-teal-950 p-4 rounded-2xl text-white shadow-md">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Gemini AgAssist</span>
+                    </div>
+                    <p class="text-xs text-emerald-100/80 leading-relaxed mb-3">Ask questions on crop soil, disease diagnosis, market trends &amp; weather.</p>
+                    <button onclick="toggleAIDrawer()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-bold py-2 rounded-xl transition shadow-xs">
+                        Launch AI Assistant
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 flex flex-col overflow-y-auto bg-zinc-50/60 pb-20 md:pb-8">
+                
+                <!-- TAB 1: HOME DASHBOARD (Default) -->
+                <section id="tab-home" class="tab-view flex-1 p-4 sm:p-8 max-w-5xl mx-auto w-full space-y-6">
+                    <!-- Welcome & Weather Card -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 sm:p-8 rounded-3xl border border-zinc-200/80 shadow-xs">
+                        <div class="space-y-1">
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-zinc-900">Welcome, Musa</h2>
+                            <p class="text-sm text-zinc-500">Check your farm status today.</p>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-200/70 p-4 rounded-2xl flex items-center gap-4">
+                            <div class="text-emerald-700">
+                                <i data-lucide="sun" class="w-8 h-8 fill-emerald-100 animate-spin-slow"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-zinc-900">31°C</h3>
+                                <p class="text-xs font-semibold text-zinc-500">Kano, NG</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Harvest Alert Banner -->
+                    <div class="bg-emerald-950 text-emerald-100 p-4 sm:p-5 rounded-2xl border border-emerald-900 flex items-start sm:items-center justify-between gap-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-emerald-900/80 text-emerald-400 rounded-xl shrink-0">
+                                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Harvest Alert</h4>
+                                <p class="text-xs text-emerald-200/90 mt-0.5">Expected rainfall in 2 hours. Protect your seeds.</p>
+                            </div>
+                        </div>
+                        <button onclick="this.parentElement.style.display='none'" class="text-emerald-400 hover:text-white p-1">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Quick Actions Grid -->
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-zinc-900 text-base">Quick Actions</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div onclick="switchTab('scanner')" class="bg-white p-5 rounded-3xl border border-zinc-200/80 shadow-xs hover:border-emerald-500 cursor-pointer transition flex flex-col gap-3 group">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 group-hover:scale-105 transition">
+                                    <i data-lucide="scan" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-zinc-900">Crop Scanner</h4>
+                                    <p class="text-xs text-zinc-400 mt-0.5">Scan pests &amp; leaves</p>
+                                </div>
+                            </div>
+
+                            <div onclick="switchTab('market')" class="bg-white p-5 rounded-3xl border border-zinc-200/80 shadow-xs hover:border-emerald-500 cursor-pointer transition flex flex-col gap-3 group">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 group-hover:scale-105 transition">
+                                    <i data-lucide="store" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-zinc-900">Marketplace</h4>
+                                    <p class="text-xs text-zinc-400 mt-0.5">List &amp; buy produce</p>
+                                </div>
+                            </div>
+
+                            <div onclick="switchTab('learn')" class="bg-white p-5 rounded-3xl border border-zinc-200/80 shadow-xs hover:border-emerald-500 cursor-pointer transition flex flex-col gap-3 group">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 group-hover:scale-105 transition">
+                                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-zinc-900">Learn &amp; Grow</h4>
+                                    <p class="text-xs text-zinc-400 mt-0.5">Video tutorials</p>
+                                </div>
+                            </div>
+
+                            <div onclick="switchTab('wallet')" class="bg-white p-5 rounded-3xl border border-zinc-200/80 shadow-xs hover:border-emerald-500 cursor-pointer transition flex flex-col gap-3 group">
+                                <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 group-hover:scale-105 transition">
+                                    <i data-lucide="wallet" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-zinc-900">Wallet</h4>
+                                    <p class="text-xs text-zinc-400 mt-0.5">Earnings &amp; funds</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Insights Section -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-zinc-900 text-base">Market Insights</h3>
+                            <button onclick="switchTab('market')" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700">See all</button>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl border border-zinc-200/80 shadow-xs flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded-full">Top Gainer</span>
+                                <h4 class="text-xl font-bold text-zinc-900 mt-2">Maize</h4>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-sm font-bold text-emerald-600 flex items-center justify-end"><i data-lucide="trending-up" class="w-4 h-4 mr-1"></i> +12.4%</span>
+                                <p class="text-xs text-zinc-400 mt-1">₦38,500 / bag</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: CROP SCANNER -->
+                <section id="tab-scanner" class="tab-view hidden flex-1 p-4 sm:p-8 max-w-5xl mx-auto w-full space-y-6">
+                    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-zinc-200/80 shadow-xs">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-emerald-100 text-emerald-700 rounded-2xl">
+                                <i data-lucide="scan-line" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-zinc-900">AI Crop Disease &amp; Pest Scanner</h2>
+                                <p class="text-xs text-zinc-500">Upload leaf photo to diagnose diseases instantly with Gemini AI</p>
+                            </div>
+                        </div>
+
+                        <div id="drop-zone" onclick="document.getElementById('file-input').click()" class="border-2 border-dashed border-emerald-300 bg-emerald-50/40 rounded-2xl p-8 text-center cursor-pointer hover:bg-emerald-50 transition relative overflow-hidden group">
+                            <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+                            <div id="upload-prompt" class="space-y-3">
+                                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto text-emerald-600 shadow-md group-hover:scale-105 transition">
+                                    <i data-lucide="camera" class="w-8 h-8"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-zinc-800">Click or tap to upload leaf photo</p>
+                                    <p class="text-xs text-zinc-500 mt-1">Supports JPG, PNG, WEBP</p>
+                                </div>
+                            </div>
+                            <img id="image-preview" class="hidden max-h-72 mx-auto rounded-xl object-contain shadow-md" alt="Crop preview">
+                        </div>
+
+                        <div class="mt-4 flex gap-3">
+                            <button id="analyze-btn" onclick="analyzeCrop()" disabled class="flex-1 bg-emerald-600 text-white font-semibold py-3 px-6 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-emerald-700 transition flex items-center justify-center gap-2 shadow-sm">
+                                <i data-lucide="sparkles" class="w-5 h-5"></i> Analyze Leaf Health
+                            </button>
+                            <button onclick="resetScanner()" class="px-4 py-3 border border-zinc-200 rounded-2xl text-zinc-600 hover:bg-zinc-100 transition text-sm font-medium">Reset</button>
+                        </div>
+                    </div>
+
+                    <div id="scanner-result" class="hidden bg-white p-6 sm:p-8 rounded-3xl border border-zinc-200/80 shadow-xs space-y-4">
+                        <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full uppercase tracking-wider">Moderate Concern</span>
+                                <h3 id="result-title" class="text-lg font-bold text-zinc-900">Early Blight (Alternaria solani)</h3>
+                            </div>
+                            <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg">94% Confidence</span>
+                        </div>
+                        <div class="space-y-3 text-sm text-zinc-700 leading-relaxed">
+                            <h4 class="font-bold text-zinc-900">Symptoms &amp; Observation</h4>
+                            <p id="result-symptoms" class="text-zinc-600 bg-zinc-50 p-4 rounded-xl text-xs sm:text-sm">Concentric dark spots observed on lower foliage with mild yellow haloing. High risk of leaf loss if untreated during high humidity.</p>
+                            <h4 class="font-bold text-zinc-900 pt-2">Recommended Treatment</h4>
+                            <ul id="result-actions" class="list-disc list-inside text-xs sm:text-sm text-zinc-600 space-y-1 bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                                <li>Apply copper-based fungicide or neem oil solution every 7 days.</li>
+                                <li>Prune infected lower foliage and ensure proper field spacing for airflow.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: MARKETPLACE -->
+                <section id="tab-market" class="tab-view hidden flex-1 p-4 sm:p-8 max-w-6xl mx-auto w-full space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-zinc-200/80">
+                        <div>
+                            <h2 class="text-xl font-bold text-zinc-900">Farmer Marketplace</h2>
+                            <p class="text-xs text-zinc-500">Browse verified listings or list your farm produce for buyers</p>
+                        </div>
+                        <button onclick="openAddProductModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 shadow-sm transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add New Listing
+                        </button>
+                    </div>
+
+                    <!-- Market Category Filter Chips -->
+                    <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+                        <button onclick="filterMarket('All', this)" class="market-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-700 text-white shrink-0 transition">All Products</button>
+                        <button onclick="filterMarket('Vegetables', this)" class="market-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-100 shrink-0 transition">Vegetables</button>
+                        <button onclick="filterMarket('Grains', this)" class="market-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-100 shrink-0 transition">Grains</button>
+                        <button onclick="filterMarket('Fruits', this)" class="market-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-100 shrink-0 transition">Fruits</button>
+                    </div>
+
+                    <!-- Marketplace Grid -->
+                    <div id="marketplace-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Dynamic Listings Injected Here -->
+                    </div>
+                </section>
+
+                <!-- TAB 4: LEARN & GROW -->
+                <section id="tab-learn" class="tab-view hidden flex-1 flex flex-col">
+                    <div class="px-4 sm:px-8 py-3 bg-white border-b border-zinc-200/80 sticky top-0 z-10 flex gap-2 overflow-x-auto no-scrollbar">
+                        <button onclick="filterVideos('All', this)" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-700 text-white shrink-0 transition">All Tutorials</button>
+                        <button onclick="filterVideos('Crop Care', this)" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-zinc-100 text-zinc-600 hover:bg-zinc-200 shrink-0 transition">Crop Care</button>
+                        <button onclick="filterVideos('Business Skills', this)" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-zinc-100 text-zinc-600 hover:bg-zinc-200 shrink-0 transition">Business &amp; Finance</button>
+                        <button onclick="filterVideos('Irrigation', this)" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-zinc-100 text-zinc-600 hover:bg-zinc-200 shrink-0 transition">Irrigation</button>
+                    </div>
+                    <div id="video-feed" class="flex-1 p-4 sm:p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-max">
+                        <!-- Video Feed Injected -->
+                    </div>
+                </section>
+
+                <!-- TAB 5: WALLET -->
+                <section id="tab-wallet" class="tab-view hidden flex-1 p-4 sm:p-8 max-w-4xl mx-auto w-full space-y-6">
+                    <div class="bg-gradient-to-br from-emerald-800 via-emerald-900 to-zinc-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg relative overflow-hidden">
+                        <div class="relative z-10 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200">Farmer Ecosystem Wallet</span>
+                                <span class="text-xs bg-emerald-500/20 border border-emerald-400/30 px-3 py-1 rounded-full text-emerald-300 font-medium">Verified Tier 2</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-emerald-200/80">Available Balance</p>
+                                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-1">₦ 184,500<span class="text-emerald-400 text-xl">.00</span></h2>
+                            </div>
+                            <div class="pt-4 flex gap-3">
+                                <button onclick="alert('Deposit gateway connecting...')" class="bg-white text-emerald-900 font-bold px-5 py-2.5 rounded-xl text-xs hover:bg-emerald-50 transition shadow-xs">Deposit Funds</button>
+                                <button onclick="alert('Transfer portal loading...')" class="bg-emerald-700/60 border border-emerald-500/40 text-white font-semibold px-5 py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Transfer</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <!-- Floating Add Product Button for Marketplace -->
+        <div id="floating-add-btn" class="fixed bottom-20 sm:bottom-6 right-6 z-30 hidden">
+            <button onclick="openAddProductModal()" class="w-14 h-14 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-105 transition transform group">
+                <i data-lucide="plus" class="w-7 h-7 group-hover:rotate-90 transition"></i>
+            </button>
+        </div>
+
+        <!-- Bottom Navigation Bar (Mobile View) -->
+        <nav class="md:hidden bg-white border-t border-zinc-200 px-4 py-2 flex items-center justify-between z-30 sticky bottom-0">
+            <button onclick="switchTab('home')" class="nav-item nav-home flex flex-col items-center gap-1 text-emerald-600">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span class="text-[10px] font-semibold">Home</span>
+            </button>
+            <button onclick="switchTab('scanner')" class="nav-item nav-scanner flex flex-col items-center gap-1 text-zinc-400 hover:text-zinc-700">
+                <i data-lucide="scan" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Scanner</span>
+            </button>
+            <button onclick="switchTab('market')" class="nav-item nav-market flex flex-col items-center gap-1 text-zinc-400 hover:text-zinc-700">
+                <i data-lucide="store" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Market</span>
+            </button>
+            <button onclick="switchTab('learn')" class="nav-item nav-learn flex flex-col items-center gap-1 text-zinc-400 hover:text-zinc-700">
+                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Learn</span>
+            </button>
+            <button onclick="switchTab('wallet')" class="nav-item nav-wallet flex flex-col items-center gap-1 text-zinc-400 hover:text-zinc-700">
+                <i data-lucide="wallet" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Wallet</span>
+            </button>
+        </nav>
+
+        <!-- Add Product Modal -->
+        <div id="add-product-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+                    <h3 class="font-bold text-zinc-900 text-lg">List New Farm Produce</h3>
+                    <button onclick="closeAddProductModal()" class="text-zinc-400 hover:text-zinc-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form id="add-product-form" onsubmit="handleAddNewProduct(event)" class="space-y-4 text-xs sm:text-sm">
+                    <div>
+                        <label class="font-semibold text-zinc-700 block mb-1">Product Title</label>
+                        <input type="text" id="prod-title" required placeholder="e.g. Organic Sweet Corn" class="w-full bg-zinc-100 px-3.5 py-2.5 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="font-semibold text-zinc-700 block mb-1">Category</label>
+                            <select id="prod-category" class="w-full bg-zinc-100 px-3 py-2.5 rounded-xl border border-zinc-200">
+                                <option value="Vegetables">Vegetables</option>
+                                <option value="Grains">Grains</option>
+                                <option value="Fruits">Fruits</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-semibold text-zinc-700 block mb-1">Price in Naira (₦)</label>
+                            <input type="text" id="prod-price" required placeholder="e.g. 15,000 / bag" class="w-full bg-zinc-100 px-3.5 py-2.5 rounded-xl border border-zinc-200">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="font-semibold text-zinc-700 block mb-1">Farmer Name</label>
+                            <input type="text" id="prod-farmer" required value="Musa Ibrahim" class="w-full bg-zinc-100 px-3.5 py-2.5 rounded-xl border border-zinc-200">
+                        </div>
+                        <div>
+                            <label class="font-semibold text-zinc-700 block mb-1">State Location</label>
+                            <input type="text" id="prod-state" required value="Kano State" class="w-full bg-zinc-100 px-3.5 py-2.5 rounded-xl border border-zinc-200">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="font-semibold text-zinc-700 block mb-1">Product Image URL</label>
+                        <input type="url" id="prod-img" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-100 px-3.5 py-2.5 rounded-xl border border-zinc-200">
+                    </div>
+                    <div class="pt-3 flex gap-2">
+                        <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">Publish Listing</button>
+                        <button type="button" onclick="closeAddProductModal()" class="px-5 py-3 border border-zinc-200 rounded-xl font-medium text-zinc-600">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- AI Chat Drawer -->
+        <div id="ai-drawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-white shadow-2xl border-l border-zinc-200 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+            <div class="px-5 py-4 bg-emerald-800 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-emerald-300"></i>
+                    <div>
+                        <h3 class="font-bold text-sm">Gemini AgAssist AI</h3>
+                        <p class="text-[10px] text-emerald-200">Agronomy Expert • Online</p>
+                    </div>
+                </div>
+                <button onclick="toggleAIDrawer()" class="p-1 rounded-lg hover:bg-emerald-700 text-emerald-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-zinc-50 text-xs sm:text-sm">
+                <div class="bg-emerald-50 text-emerald-950 p-3.5 rounded-2xl border border-emerald-100 max-w-[85%]">
+                    Hello Musa! I'm your Gemini AI farming advisor. Ask me anything about crop weather alerts or market prices!
+                </div>
+            </div>
+            <div class="p-3 bg-white border-t border-zinc-200 flex gap-2">
+                <input type="text" id="chat-input" placeholder="Type your farming question..." class="flex-1 bg-zinc-100 px-3.5 py-2.5 rounded-xl text-xs focus:outline-none" onkeyup="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()" class="bg-emerald-600 text-white p-2.5 rounded-xl hover:bg-emerald-700 transition">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Video Modal -->
+        <div id="video-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex flex-col justify-center items-center p-2 sm:p-6">
+            <div class="w-full max-w-4xl bg-zinc-900 rounded-2xl overflow-hidden shadow-2xl border border-zinc-800 flex flex-col max-h-[92vh]">
+                <div class="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800 text-white shrink-0">
+                    <h3 id="modal-title" class="text-sm font-semibold truncate pr-4">Video Player</h3>
+                    <button onclick="closeVideoModal()" class="text-zinc-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+                <div class="relative w-full aspect-video bg-black shrink-0">
+                    <iframe id="youtube-iframe" class="w-full h-full" src="" title="YouTube video" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="p-4 sm:p-6 text-zinc-300 overflow-y-auto space-y-3 bg-zinc-900/90 flex-1">
+                    <h2 id="modal-heading" class="text-base sm:text-lg font-bold text-white"></h2>
+                    <p id="modal-stats" class="text-zinc-400 text-xs"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Key Modal -->
+        <div id="api-key-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-zinc-900 text-base">Gemini &amp; YouTube Settings</h3>
+                    <button onclick="closeApiKeyModal()" class="text-zinc-400 hover:text-zinc-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <input type="text" id="yt-key-input" placeholder="Enter API Key..." class="w-full bg-zinc-100 px-3 py-2 rounded-xl text-xs border border-zinc-200">
+                <button onclick="closeApiKeyModal()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs">Save Key</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Application Logic -->
+    <script>
+        let currentTab = 'home';
+        let marketplaceListings = [
+            { id: 1, title: "White Yam (Bulk)", category: "Grains", price: "₦45,500/tuber", farmer: "Chioma Eze", state: "Benue State", image: "https://images.unsplash.com/photo-1599814412204-7a06412f8fc7?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, title: "Plump Tomatoes", category: "Vegetables", price: "₦4,200/crate", farmer: "Obi Okafor", state: "Oyo State", image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, title: "Fresh Carrots", category: "Vegetables", price: "₦2,500/bag", farmer: "Aisha Yusuf", state: "Kano State", image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, title: "Mixed Peppers", category: "Vegetables", price: "₦3,500/bag", farmer: "Ibrahim Musa", state: "Kaduna State", image: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, title: "Golden Millet", category: "Grains", price: "₦12,000/cwt", farmer: "Sani Garba", state: "Sokoto State", image: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, title: "Sweet Potato", category: "Vegetables", price: "₦5,500/bag", farmer: "Bisi Ade", state: "Ogun State", image: "https://images.unsplash.com/photo-1596097635121-14b632ff43d5?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        const mockVideos = [
+            { id: "1", title: "Sustainable Irrigation Systems for Small-Scale Farms", category: "Irrigation", duration: "14:22", thumbnail: "https://images.unsplash.com/photo-1595974482597-4f8fc73ac1a9?auto=format&fit=crop&w=800&q=80", youtubeId: "dQw4w9WgXcQ", author: "Dr. Amadi Olabisi", views: "12K views" },
+            { id: "2", title: "5 Organic Ways to Combat Fall Armyworm in Cereals", category: "Crop Care", duration: "08:45", thumbnail: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&w=800&q=80", youtubeId: "jNQXAC9IVRw", author: "Ibrahim Musa", views: "8.4K views" }
+        ];
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-head-btn, .sidebar-btn, .nav-item').forEach(btn => {
+                btn.classList.remove('text-emerald-600', 'bg-emerald-50', 'font-semibold');
+                btn.classList.add('text-zinc-600', 'text-zinc-400');
+            });
+
+            document.querySelectorAll(`.nav-${tabId}, .sidebar-${tabId}`).forEach(btn => {
+                btn.classList.add('text-emerald-600', 'font-semibold');
+                if (btn.classList.contains('sidebar-btn')) btn.classList.add('bg-emerald-50');
+            });
+
+            // Toggle floating add button only on market tab
+            const floatBtn = document.getElementById('floating-add-btn');
+            if (tabId === 'market') {
+                floatBtn.classList.remove('hidden');
+            } else {
+                floatBtn.classList.add('hidden');
+            }
+        }
+
+        function renderMarketplace(items) {
+            const grid = document.getElementById('marketplace-grid');
+            grid.innerHTML = '';
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl overflow-hidden border border-zinc-200/80 shadow-xs flex flex-col group hover:shadow-md transition";
+                card.innerHTML = `
+                    <div class="relative w-full aspect-[4/3] bg-zinc-100 overflow-hidden">
+                        <img src="${item.image || 'https://placehold.co/600x400/27272a/ffffff?text=Produce'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/27272a/ffffff?text=Produce'">
+                    </div>
+                    <div class="p-5 flex flex-col justify-between flex-1 space-y-3">
+                        <div>
+                            <h3 class="font-bold text-zinc-900 text-base">${item.title}</h3>
+                            <p class="text-emerald-700 font-extrabold text-lg mt-1">${item.price}</p>
+                        </div>
+                        <div class="pt-3 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
+                            <span class="font-medium text-zinc-800 flex items-center gap-1">${item.farmer} <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600 fill-emerald-100"></i></span>
+                            <span>📍 ${item.state}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function filterMarket(cat, btn) {
+            document.querySelectorAll('.market-filter-btn').forEach(b => {
+                b.className = "market-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-100 shrink-0 transition";
+            });
+            btn.className = "market-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-700 text-white shrink-0 transition";
+
+            if (cat === 'All') {
+                renderMarketplace(marketplaceListings);
+            } else {
+                renderMarketplace(marketplaceListings.filter(i => i.category === cat));
+            }
+        }
+
+        function openAddProductModal() { document.getElementById('add-product-modal').classList.remove('hidden'); }
+        function closeAddProductModal() { document.getElementById('add-product-modal').classList.add('hidden'); }
+
+        function handleAddNewProduct(e) {
+            e.preventDefault();
+            const newProd = {
+                id: Date.now(),
+                title: document.getElementById('prod-title').value,
+                category: document.getElementById('prod-category').value,
+                price: document.getElementById('prod-price').value,
+                farmer: document.getElementById('prod-farmer').value,
+                state: document.getElementById('prod-state').value,
+                image: document.getElementById('prod-img').value || 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=600&q=80'
+            };
+            marketplaceListings.unshift(newProd);
+            renderMarketplace(marketplaceListings);
+            closeAddProductModal();
+            document.getElementById('add-product-form').reset();
+            switchTab('market');
+            alert('Produce listed successfully on the Marketplace!');
+        }
+
+        function renderVideos(items) {
+            const feed = document.getElementById('video-feed');
+            feed.innerHTML = '';
+            items.forEach(video => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl overflow-hidden shadow-xs border border-zinc-200/80 flex flex-col group cursor-pointer hover:shadow-md transition";
+                card.onclick = () => openVideoModal(video);
+                card.innerHTML = `
+                    <div class="relative w-full aspect-video bg-zinc-200 overflow-hidden">
+                        <img src="${video.thumbnail}" alt="${video.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] font-semibold px-2 py-0.5 rounded">${video.duration}</div>
+                    </div>
+                    <div class="p-4 flex flex-col justify-between flex-1">
+                        <h2 class="text-xs sm:text-sm font-semibold text-zinc-900 line-clamp-2">${video.title}</h2>
+                        <p class="text-xs text-zinc-500 mt-2">${video.author} • ${video.views}</p>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function openVideoModal(video) {
+            document.getElementById('youtube-iframe').src = `https://www.youtube.com/embed/${video.youtubeId}?autoplay=1`;
+            document.getElementById('modal-title').innerText = video.title;
+            document.getElementById('modal-heading').innerText = video.title;
+            document.getElementById('modal-stats').innerText = `${video.author} • ${video.views}`;
+            document.getElementById('video-modal').classList.remove('hidden');
+        }
+        function closeVideoModal() {
+            document.getElementById('youtube-iframe').src = '';
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+
+        function handleImageSelect(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    document.getElementById('image-preview').src = evt.target.result;
+                    document.getElementById('image-preview').classList.remove('hidden');
+                    document.getElementById('upload-prompt').classList.add('hidden');
+                    document.getElementById('analyze-btn').disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        function analyzeCrop() {
+            const btn = document.getElementById('analyze-btn');
+            btn.innerHTML = `Analyzing with Gemini AI...`;
+            setTimeout(() => {
+                btn.innerHTML = `<i data-lucide="sparkles" class="w-5 h-5"></i> Re-Analyze Leaf Health`;
+                document.getElementById('scanner-result').classList.remove('hidden');
+                lucide.createIcons();
+            }, 1200);
+        }
+        function resetScanner() {
+            document.getElementById('image-preview').classList.add('hidden');
+            document.getElementById('upload-prompt').classList.remove('hidden');
+            document.getElementById('scanner-result').classList.add('hidden');
+            document.getElementById('analyze-btn').disabled = true;
+        }
+
+        function toggleAIDrawer() { document.getElementById('ai-drawer').classList.toggle('translate-x-full'); }
+        function toggleMobileSidebar() {
+            document.getElementById('sidebar-panel').classList.toggle('-translate-x-full');
+            document.getElementById('mobile-sidebar-overlay').classList.toggle('hidden');
+        }
+        function openApiKeyModal() { document.getElementById('api-key-modal').classList.remove('hidden'); }
+        function closeApiKeyModal() { document.getElementById('api-key-modal').classList.add('hidden'); }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if(!msg) return;
+            const chatBox = document.getElementById('chat-messages');
+            chatBox.innerHTML += `<div class="bg-emerald-600 text-white p-3.5 rounded-2xl max-w-[85%] ml-auto text-xs">${msg}</div>`;
+            input.value = '';
+            setTimeout(() => {
+                chatBox.innerHTML += `<div class="bg-emerald-50 text-emerald-950 p-3.5 rounded-2xl border border-emerald-100 max-w-[85%] text-xs">Based on current weather in Kano, keep your maize well hydrated and monitor for early fungal signs!</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 800);
+        }
+
+        window.onload = function() {
+            renderMarketplace(marketplaceListings);
+            renderVideos(mockVideos);
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>

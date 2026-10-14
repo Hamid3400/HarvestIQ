@@ -1,0 +1,337 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+:root{
+    --wheat-cl--: Wheat;
+    --green--: Green;
+    --white-cl--: White;
+    --grey-cl--: Grey;
+    --mid1--: 0.9em
+}
+
+.body_container{
+    margin: 0px 10px;
+}
+
+a{
+    text-decoration: none;
+    color: var(--grey-cl--);
+    font-size: var(--mid1--);
+}
+
+button{
+    background: none;
+}
+/* header */
+.header_container{
+    border-bottom: 1px solid var(--grey-cl--);
+    height: 50px;
+    background: var(--white-cl--)
+}
+
+.header_items{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px ;
+}
+
+.notif_profile{
+    display: flex;
+    align-items: center;
+    gap: 14px   ;
+}
+
+.profile_img{
+    width: 25px;
+    height: 25px;
+    border-radius: 50px;
+}
+
+/* section */
+
+.greetUser-weather{
+    margin: 25px 0px;
+    display: flex;
+    gap: 40px;
+}
+
+#weatherapi_box{
+    height: 70px;
+    width: 60px;
+    border: 1px solid var(--grey-cl--);
+    border-radius: 7px;
+}
+
+.harvest_alert{
+    border: 1px solid var(--grey-cl--);
+    padding: 13px 40px;
+    border-radius: 10px;
+    border-left: 5px solid var(--green--);
+}
+
+.quick_actions{
+    margin: 20px 0px;
+}
+
+.all_quick_options{
+    margin: 20px 0px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.quick_options{
+    border: 1px solid var(--grey-cl--);
+    padding: 40px 20px;
+    border-radius: 10px;
+}
+
+.see_all{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 170px;
+    margin-bottom: 10px;
+}
+
+.see_all :last-child{
+    color: var(--green--);
+}
+
+.market_insights_items{
+    border: 1px solid var(--grey-cl--);
+    width: 100%;
+    height: 120px;
+    border-radius: 10px;
+}
+
+.gemini-bttn{
+    margin: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.gemini-bttn button{
+    background: var(--green--);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 30px;
+}
+
+.gemini-bttn button a{
+    color: var(--white-cl--);
+}
+
+/* footer */
+
+.footer_container{
+    display: flex;
+    justify-content: space-evenly;
+    border-top: 1px solid var(--grey-cl--);
+    margin: 15px 0px ;
+    padding: 15px 0px;
+    color: var(--grey-cl--);
+}
+
+.footer_items{
+    
+}
+
+/* ############################################################################################################### */
+/* Market Place CSS */
+
+.side-nav{
+    display: flex;
+    align-items: center;
+    gap: 7px   ;
+}
+
+.items_card_container{
+    margin: 12px;
+    display: flex;
+    gap: 14px;
+    flex-direction: row;
+    flex-flow: wrap;
+}
+.items_card{
+    width: 150px;
+    height: 250px;
+    background-color: var(--grey-cl--);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    box-shadow: 0.px 0.4px 10px rgba(0, 0, 0, 0.4);
+    
+
+}
+
+.card_items_info{
+    padding: 10px;
+    width: 100%;
+    background-color: var(--white-cl--);
+
+    
+}
+
+.card_image{
+    width: 100%;
+    height: 55%;
+    
+}
+
+
+
+@media screen and (max-width: 600px){
+    .all_quick_options{
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+/* ############################################################################################################### */
+/* Language List */
+
+.topBgImage {
+    width: 100%;
+    height: 40vh;
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6)), url("/assets/images/Gemini_Generated_Image_16inkq16inkq16in.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.langList {
+    display: flex;
+    flex-direction: column;
+    margin: 5%;
+}
+
+.langList h3 {
+    margin: 10px 0px 20px 0px;
+    font-size: 1.25em;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+#list {
+    height: 6vh;
+    min-height: 52px;
+    margin-bottom: 2vh;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 16px;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+#list input[type="radio"] {
+    accent-color: var(--green--);
+    width: 20px;
+    height: 20px;
+}
+
+#list:hover {
+    border-color: var(--green--);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+}
+
+.submitBtn {
+    margin-top: 15vh;
+    background: var(--green--);
+    border: none;
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: var(--white-cl--);
+    font-weight: 600;
+    font-size: 1.1em;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.submitBtn:hover {
+    background: #047857;
+}
+
+.submitBtn:active {
+    transform: scale(0.98);
+}
+
+
+/* ############################################################################################################### */
+/* Loarder */
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.loader-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.loader-text h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #14532d;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.loader-text p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0;
+    font-weight: 500;
+}
+
+.loader-image img {
+    width: 10vw;
+    min-width: 50px;
+    max-width: 80px;
+    height: auto;
+    object-fit: contain;
+    animation: spinLogo 2s linear infinite;
+}
+
+@keyframes spinLogo {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
